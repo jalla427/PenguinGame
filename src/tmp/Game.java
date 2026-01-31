@@ -18,6 +18,8 @@ public class Game extends Canvas implements Runnable {
 
     //Sprites
     public static BufferedImage icebackground_1280x720;
+    public static BufferedImage stage_boundary_1280x720;
+    public static BufferedImage stage_bottom_1280x106;
     public static SpriteSheet penguin_sheet_79x79_105;
     public static BufferedImage button_menu_200x120;
     public static BufferedImage button_menu_hover_200x120;
@@ -28,7 +30,7 @@ public class Game extends Canvas implements Runnable {
 
     //Menu vars
     protected Menu menu;
-    private static float menuPenguinTimer = 0;
+    private static float menuPenguinTimer = 150;
 
     //Used for determining the current scene
     public enum STATE {
@@ -44,6 +46,8 @@ public class Game extends Canvas implements Runnable {
         BufferedImageLoader loader = new BufferedImageLoader();
 
         icebackground_1280x720 = loader.loadImage("/IceBackground_1280x720.png");
+        stage_boundary_1280x720 = loader.loadImage("/stage_boundary_1280x720.png");
+        stage_bottom_1280x106 = loader.loadImage("/stage_bottom_1280x106.png");
         penguin_sheet_79x79_105 = new SpriteSheet(loader.loadImage("/penguin_sheet_79x79.png"), 4, 105, 79, 79);
         button_menu_200x120 = loader.loadImage("/button_menu_200x120.png");
         button_menu_hover_200x120 = loader.loadImage("/button_menu_hover_200x120.png");
@@ -94,10 +98,10 @@ public class Game extends Canvas implements Runnable {
     }
 
     private void tick() {
-        if(gameState == STATE.Menu) {
-            menu.tick();
+        menu.tick();
+        if(gameState == STATE.Menu || gameState == STATE.Controls) {
             menuPenguinTimer += 1 * deltaTime;
-            if(menuPenguinTimer >= 100) {
+            if(menuPenguinTimer >= 200) {
                 int pengColor = 0;
                 double pengColorRoll = Math.random();
 
@@ -135,6 +139,10 @@ public class Game extends Canvas implements Runnable {
 
         g.dispose();
         bs.show();
+    }
+
+    public static void beginGame(int level) {
+
     }
 
     public static boolean isPointInBounds(int mx, int my, int x, int y, int width, int height) {

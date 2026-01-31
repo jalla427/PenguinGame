@@ -27,19 +27,26 @@ public class Handler {
     }
 
     public static void renderLowerElements(Graphics g) {
-
+        if(Game.gameState == Game.STATE.Game) {
+            g.drawImage(Game.stage_boundary_1280x720, 0, 0, null);
+        }
     }
 
     public static void renderMiddleElements(Graphics g) {
-        if(Game.gameState == Game.STATE.Menu) {
+        if(Game.gameState == Game.STATE.Menu || Game.gameState == Game.STATE.Game) {
             for(int i = 0; i < penguinList.size(); i++) {
                 penguinList.get(i).render(g);
             }
         }
+
+        //Lower stage wall
+        if(Game.gameState == Game.STATE.Game) {
+            g.drawImage(Game.stage_boundary_1280x720, 0, 0, null);
+        }
     }
 
     public static void renderHigherElements(Graphics g) {
-        if(Game.gameState == Game.STATE.Menu) {
+        if(Game.gameState == Game.STATE.Menu || Game.gameState == Game.STATE.Controls) {
             for(int i = 0; i < buttonList.size(); i++) {
                 buttonList.get(i).render(g);
             }
@@ -51,7 +58,6 @@ public class Handler {
             buttonList.remove(0);
         }
     }
-
     public static boolean areButtons() {
         return !buttonList.isEmpty();
     }
@@ -65,6 +71,12 @@ public class Handler {
             }
         }
         return null;
+    }
+
+    public static void clearPenguins() {
+        while(arePenguins()) {
+            penguinList.remove(0);
+        }
     }
     public static boolean arePenguins() { return !penguinList.isEmpty(); }
     public static void addPenguin(Penguin penguin) { penguinList.add(penguin); }
