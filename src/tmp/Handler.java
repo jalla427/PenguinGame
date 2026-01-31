@@ -1,5 +1,6 @@
 package tmp;
 
+import GameObjects.Penguin;
 import Menu.ImageButton;
 
 import java.awt.*;
@@ -8,9 +9,17 @@ import java.util.ArrayList;
 public class Handler {
 
     public static ArrayList<ImageButton> buttonList = new ArrayList<>(5);
+    public static ArrayList<Penguin> penguinList = new ArrayList<>(20);
 
     public static void tick() {
-
+        if(Game.gameState == Game.STATE.Menu) {
+            for(int i = 0; i < buttonList.size(); i++) {
+                buttonList.get(i).tick();
+            }
+            for(int i = 0; i < penguinList.size(); i++) {
+                penguinList.get(i).tick();
+            }
+        }
     }
 
     public static void renderLowerElements(Graphics g) {
@@ -26,6 +35,9 @@ public class Handler {
             for(int i = 0; i < buttonList.size(); i++) {
                 buttonList.get(i).render(g);
             }
+            for(int i = 0; i < penguinList.size(); i++) {
+                penguinList.get(i).render(g);
+            }
         }
     }
 
@@ -40,5 +52,8 @@ public class Handler {
     }
 
     public static void addButton(ImageButton button) { buttonList.add(button); }
-    public void removeButton(ImageButton button) { buttonList.remove(button); }
+    public static void removeButton(ImageButton button) { buttonList.remove(button); }
+    public static boolean arePenguins() { return !penguinList.isEmpty(); }
+    public static void addPenguin(Penguin penguin) { penguinList.add(penguin); }
+    public static void removePenguin(Penguin penguin) { penguinList.remove(penguin); }
 }

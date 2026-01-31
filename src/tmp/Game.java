@@ -1,5 +1,7 @@
 package tmp;
 
+import GameObjects.Penguin;
+
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
@@ -15,11 +17,16 @@ public class Game extends Canvas implements Runnable {
     public static int sHeight = 720;
 
     //Sprites
+    public static BufferedImage icebackground_1280x720;
+    public static SpriteSheet penguin_sheet_79x79_106;
     public static BufferedImage button_menu_200x120;
 
     //Rendering vars
     BufferStrategy bs;
     Graphics g;
+
+    //Menu vars
+    private static float menuPenguinTimer = 0;
 
     //Used for determining the current scene
     public enum STATE {
@@ -34,6 +41,8 @@ public class Game extends Canvas implements Runnable {
         //Load assets
         BufferedImageLoader loader = new BufferedImageLoader();
 
+        icebackground_1280x720 = loader.loadImage("/IceBackground_1280x720.png");
+        penguin_sheet_79x79_106 = new SpriteSheet(loader.loadImage("/penguin_sheet_79x79.png"), 4, 106, 79, 79);
         button_menu_200x120 = loader.loadImage("/button_menu_200x120.png");
 
         //Start game
@@ -79,7 +88,21 @@ public class Game extends Canvas implements Runnable {
     private void tick() {
         if(gameState == STATE.Menu) {
             Menu.tick();
+            menuPenguinTimer += 1 * deltaTime;
+            if(menuPenguinTimer >= 100) {
+                int pengColor = 0;
+                double pengColorRoll = Math.random();
+
+                if(pengColorRoll >= 0.7) { pengColor++; }
+                if(pengColorRoll >= 0.8) { pengColor++; }
+                if(pengColorRoll >= 0.9) { pengColor++; }
+
+                Handler.addPenguin(new Penguin((int) (Math.random() * sWidth), -79, pengColor));
+                menuPenguinTimer = 0;
+            }
         }
+
+        Handler.tick();
     }
 
     private void render() {
@@ -94,12 +117,13 @@ public class Game extends Canvas implements Runnable {
         g = bs.getDrawGraphics();
 
         //Background
-        g.setColor(Color.black);
+        g.setColor(Color.white);
         g.fillRect(0, 0, sWidth, sHeight);
+        g.drawImage(icebackground_1280x720, 0, 0, null);
 
-        Handler.renderHigherElements(g);
-        Handler.renderMiddleElements(g);
         Handler.renderLowerElements(g);
+        Handler.renderMiddleElements(g);
+        Handler.renderHigherElements(g);
 
         g.dispose();
         bs.show();

@@ -1,7 +1,7 @@
 package tmp;
 
 public enum ID {
-    Player(),
+    Penguin(),
     Level(),
     Button()
 }

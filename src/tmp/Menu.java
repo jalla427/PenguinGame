@@ -10,7 +10,7 @@ public class Menu extends MouseAdapter {
         boolean buttonsFound = !Handler.areButtons();
 
         if(Game.gameState == Game.STATE.Menu && buttonsFound) {
-            Handler.addButton(new ImageButton("Play", Game.button_menu_200x120, (Game.sWidth / 2) + 100, (Game.sHeight / 2) + 60, 200, 120));
+            Handler.addButton(new ImageButton("Play", Game.button_menu_200x120, (Game.sWidth / 2) - 100, (Game.sHeight / 2) - 60, 200, 120));
         }
     }
 
