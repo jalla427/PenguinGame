@@ -18,7 +18,7 @@ public class Game extends Canvas implements Runnable {
 
     //Sprites
     public static BufferedImage icebackground_1280x720;
-    public static SpriteSheet penguin_sheet_79x79_106;
+    public static SpriteSheet penguin_sheet_79x79_105;
     public static BufferedImage button_menu_200x120;
 
     //Rendering vars
@@ -42,7 +42,7 @@ public class Game extends Canvas implements Runnable {
         BufferedImageLoader loader = new BufferedImageLoader();
 
         icebackground_1280x720 = loader.loadImage("/IceBackground_1280x720.png");
-        penguin_sheet_79x79_106 = new SpriteSheet(loader.loadImage("/penguin_sheet_79x79.png"), 4, 106, 79, 79);
+        penguin_sheet_79x79_105 = new SpriteSheet(loader.loadImage("/penguin_sheet_79x79.png"), 4, 105, 79, 79);
         button_menu_200x120 = loader.loadImage("/button_menu_200x120.png");
 
         //Start game

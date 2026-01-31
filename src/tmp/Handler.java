@@ -27,16 +27,17 @@ public class Handler {
     }
 
     public static void renderMiddleElements(Graphics g) {
-
+        if(Game.gameState == Game.STATE.Menu) {
+            for(int i = 0; i < penguinList.size(); i++) {
+                penguinList.get(i).render(g);
+            }
+        }
     }
 
     public static void renderHigherElements(Graphics g) {
         if(Game.gameState == Game.STATE.Menu) {
             for(int i = 0; i < buttonList.size(); i++) {
                 buttonList.get(i).render(g);
-            }
-            for(int i = 0; i < penguinList.size(); i++) {
-                penguinList.get(i).render(g);
             }
         }
     }

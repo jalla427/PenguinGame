@@ -34,9 +34,9 @@ public class Penguin extends GameObject {
                 this.animationFrame++;
                 this.animationTimer = 0;
             }
-            if(this.animationFrame > 106) { this.animationFrame = 1; }
+            if(this.animationFrame > 105) { this.animationFrame = 1; }
 
-            g.drawImage(Game.penguin_sheet_79x79_106.grabImageFast(color + 1, this.animationFrame), (int) (x - 7), (int) (y - 7), null);
+            g.drawImage(Game.penguin_sheet_79x79_105.grabImageFast(color + 1, this.animationFrame), (int) (x - 7), (int) (y - 7), null);
         }
     }
 
