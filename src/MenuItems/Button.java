@@ -1,4 +1,4 @@
-package Menu;
+package MenuItems;
 
 import tmp.ID;
 
@@ -11,6 +11,7 @@ public abstract class Button {
     private int y;
     private int width;
     private int height;
+    public boolean isClicked = false;
 
     public Button(String name, int x, int y, int width, int height) {
         this.name = name;

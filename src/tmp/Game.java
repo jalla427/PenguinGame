@@ -20,18 +20,20 @@ public class Game extends Canvas implements Runnable {
     public static BufferedImage icebackground_1280x720;
     public static SpriteSheet penguin_sheet_79x79_105;
     public static BufferedImage button_menu_200x120;
+    public static BufferedImage button_menu_hover_200x120;
 
     //Rendering vars
     BufferStrategy bs;
     Graphics g;
 
     //Menu vars
+    protected Menu menu;
     private static float menuPenguinTimer = 0;
 
     //Used for determining the current scene
     public enum STATE {
         Menu,
-        Settings,
+        Controls,
         Game
     }
 
@@ -44,6 +46,12 @@ public class Game extends Canvas implements Runnable {
         icebackground_1280x720 = loader.loadImage("/IceBackground_1280x720.png");
         penguin_sheet_79x79_105 = new SpriteSheet(loader.loadImage("/penguin_sheet_79x79.png"), 4, 105, 79, 79);
         button_menu_200x120 = loader.loadImage("/button_menu_200x120.png");
+        button_menu_hover_200x120 = loader.loadImage("/button_menu_hover_200x120.png");
+
+        //Create core objects
+        menu = new Menu();
+        //this.addKeyListener(new KeyInput());
+        this.addMouseListener(menu);
 
         //Start game
         new Main("Penguin Bowling", this);
@@ -87,7 +95,7 @@ public class Game extends Canvas implements Runnable {
 
     private void tick() {
         if(gameState == STATE.Menu) {
-            Menu.tick();
+            menu.tick();
             menuPenguinTimer += 1 * deltaTime;
             if(menuPenguinTimer >= 100) {
                 int pengColor = 0;
@@ -127,5 +135,9 @@ public class Game extends Canvas implements Runnable {
 
         g.dispose();
         bs.show();
+    }
+
+    public static boolean isPointInBounds(int mx, int my, int x, int y, int width, int height) {
+        return mx > x && mx < x + width && my > y && my < y + height;
     }
 }
