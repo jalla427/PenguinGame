@@ -38,6 +38,19 @@ public class Penguin extends GameObject {
 
             g.drawImage(Game.penguin_sheet_79x79_105.grabImageFast(color + 1, this.animationFrame), (int) (x - 7), (int) (y - 7), null);
         }
+
+        if(Game.gameState == Game.STATE.Game) {
+            g.drawImage(Game.penguin_sheet_79x79_105.grabImageFast(color + 1, this.animationFrame), (int) (x - 7), (int) (y - 7), null);
+        }
+    }
+
+    public void launch(int targetX, int targetY, float speed) {
+        double dx = targetX - this.x + (this.width / 2);
+        double dy = targetY - this.y + (this.height / 2);
+        double angle = Math.atan2(dy, dx);
+
+        this.velX = (float) (Math.cos(angle) * speed);
+        this.velY = (float) (Math.sin(angle) * speed);
     }
 
     public Polygon getBounds() {

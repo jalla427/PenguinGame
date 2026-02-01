@@ -39,6 +39,14 @@ public class Menu extends MouseAdapter {
                 buttonClicked.isClicked = true;
             }
         }
+
+        if(Game.gameState == Game.STATE.Game) {
+            //Place crosshair marker
+            if(my > 100 && my < (Game.sHeight - 106) && mx > 18 && mx < Game.sWidth - 21) {
+                if(Handler.areCrosshair()) { Handler.removeCrosshair(); }
+                Handler.addCrosshair(mx - 12, my - 12);
+            }
+        }
     }
 
     public void mouseReleased(MouseEvent e) {

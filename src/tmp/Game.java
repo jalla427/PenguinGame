@@ -21,6 +21,7 @@ public class Game extends Canvas implements Runnable {
     public static BufferedImage stage_boundary_1280x720;
     public static BufferedImage stage_bottom_1280x106;
     public static SpriteSheet penguin_sheet_79x79_105;
+    public static BufferedImage crosshair_25x25;
     public static BufferedImage button_menu_200x120;
     public static BufferedImage button_menu_hover_200x120;
 
@@ -49,6 +50,7 @@ public class Game extends Canvas implements Runnable {
         stage_boundary_1280x720 = loader.loadImage("/stage_boundary_1280x720.png");
         stage_bottom_1280x106 = loader.loadImage("/stage_bottom_1280x106.png");
         penguin_sheet_79x79_105 = new SpriteSheet(loader.loadImage("/penguin_sheet_79x79.png"), 4, 105, 79, 79);
+        crosshair_25x25 = loader.loadImage("/crosshair_25x25.png");
         button_menu_200x120 = loader.loadImage("/button_menu_200x120.png");
         button_menu_hover_200x120 = loader.loadImage("/button_menu_hover_200x120.png");
 
@@ -99,7 +101,7 @@ public class Game extends Canvas implements Runnable {
 
     private void tick() {
         menu.tick();
-        if(gameState == STATE.Menu || gameState == STATE.Controls) {
+        if(gameState == STATE.Menu) {
             menuPenguinTimer += 1 * deltaTime;
             if(menuPenguinTimer >= 200) {
                 int pengColor = 0;
