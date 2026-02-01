@@ -25,6 +25,11 @@ public class Penguin extends GameObject {
                 Handler.removePenguin(this);
             }
         }
+
+        if(Game.gameState == Game.STATE.Game) {
+            this.x += this.velX * Game.deltaTime;
+            this.y += this.velY * Game.deltaTime;
+        }
     }
 
     public void render(Graphics g) {

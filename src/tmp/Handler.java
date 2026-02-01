@@ -24,6 +24,12 @@ public class Handler {
                 penguinList.get(i).tick();
             }
         }
+
+        if(Game.gameState == Game.STATE.Game) {
+            for(int i = 0; i < penguinList.size(); i++) {
+                penguinList.get(i).tick();
+            }
+        }
     }
 
     public static void renderLowerElements(Graphics g) {
@@ -41,7 +47,7 @@ public class Handler {
 
         //Lower stage wall
         if(Game.gameState == Game.STATE.Game) {
-            g.drawImage(Game.stage_boundary_1280x720, 0, 0, null);
+            g.drawImage(Game.stage_bottom_1280x106, 0, Game.sHeight - 106, null);
         }
     }
 

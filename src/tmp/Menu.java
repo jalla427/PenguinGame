@@ -8,6 +8,8 @@ import MenuItems.*;
 import MenuItems.Button;
 import tmp.Handler;
 
+import javax.swing.*;
+
 public class Menu extends MouseAdapter {
 
     public static Font mainButtonFont = new Font("SansSerif", Font.BOLD, 32);
@@ -42,9 +44,13 @@ public class Menu extends MouseAdapter {
 
         if(Game.gameState == Game.STATE.Game) {
             //Place crosshair marker
-            if(my > 100 && my < (Game.sHeight - 106) && mx > 18 && mx < Game.sWidth - 21) {
+            if(my > 100 && my < (Game.sHeight - 106) && mx > 18 && mx < Game.sWidth - 21 && SwingUtilities.isLeftMouseButton(e)) {
                 if(Handler.areCrosshair()) { Handler.removeCrosshair(); }
                 Handler.addCrosshair(mx - 12, my - 12);
+            }
+            //Charge launch
+            if(Handler.areCrosshair() && SwingUtilities.isRightMouseButton(e)) {
+                Game.charging = true;
             }
         }
     }
@@ -68,6 +74,7 @@ public class Menu extends MouseAdapter {
                 Handler.clearButtons();
                 Handler.clearPenguins();
                 Game.gameState = Game.STATE.Game;
+                Game.beginGame(1);
             }
             if(buttonClicked.getName() == "CONTROLS") {
                 Handler.clearButtons();
@@ -83,6 +90,15 @@ public class Menu extends MouseAdapter {
             if(buttonClicked.getName() == "BACK") {
                 Handler.clearButtons();
                 Game.gameState = Game.STATE.Menu;
+            }
+        }
+
+        if(Game.gameState == Game.STATE.Game) {
+            //Launch
+            if(Handler.areCrosshair() && SwingUtilities.isRightMouseButton(e)) {
+                Handler.penguinList.get(0).launch((int) Handler.crosshairList.get(0).getX(), (int) Handler.crosshairList.get(0).getY(), Game.chargePower);
+                //Handler.removeCrosshair();
+                Game.charging = false;
             }
         }
     }

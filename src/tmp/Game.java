@@ -33,6 +33,10 @@ public class Game extends Canvas implements Runnable {
     protected Menu menu;
     private static float menuPenguinTimer = 150;
 
+    //Gameplay vars
+    public static float chargePower = 5;
+    public static boolean charging = false;
+
     //Used for determining the current scene
     public enum STATE {
         Menu,
@@ -144,10 +148,12 @@ public class Game extends Canvas implements Runnable {
     }
 
     public static void beginGame(int level) {
-
+        Handler.addPenguin(new Penguin(50, sHeight / 2, 0));
     }
 
     public static boolean isPointInBounds(int mx, int my, int x, int y, int width, int height) {
         return mx > x && mx < x + width && my > y && my < y + height;
     }
+
+
 }
