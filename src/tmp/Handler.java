@@ -5,12 +5,15 @@ import MenuItems.*;
 import MenuItems.Button;
 
 import java.awt.*;
+import java.awt.geom.Area;
 import java.util.ArrayList;
 
 public class Handler {
     public static ArrayList<Button> buttonList = new ArrayList<>(5);
     public static ArrayList<Penguin> penguinList = new ArrayList<>(20);
     public static ArrayList<Crosshair> crosshairList = new ArrayList<>(1);
+    public static ArrayList<StageChunk> stageList = new ArrayList<>(5);
+    public static Area currentLevelArea = null;
 
     public static void tick() {
         if(Game.gameState == Game.STATE.Menu) {
@@ -48,6 +51,10 @@ public class Handler {
         //Lower stage wall
         if(Game.gameState == Game.STATE.Game) {
             g.drawImage(Game.stage_bottom_1280x106, 0, Game.sHeight - 106, null);
+
+            for(int i = 0; i < stageList.size(); i++) {
+                stageList.get(i).render(g);
+            }
         }
     }
 
@@ -62,6 +69,17 @@ public class Handler {
                 buttonList.get(i).render(g);
             }
         }
+    }
+
+    public static void findTotalLevelArea() {
+        Area combinedLevel = new Area();
+        for (int i = 0; i < stageList.size(); i++) {
+            GameObject tempObject = stageList.get(i);
+            if (tempObject.getID() == ID.Level) {
+                combinedLevel.add(new Area(tempObject.getBounds()));
+            }
+        }
+        currentLevelArea = combinedLevel;
     }
 
     public static void clearButtons() {

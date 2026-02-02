@@ -97,7 +97,7 @@ public class Menu extends MouseAdapter {
             //Launch
             if(Handler.areCrosshair() && SwingUtilities.isRightMouseButton(e)) {
                 Handler.penguinList.get(0).launch((int) Handler.crosshairList.get(0).getX(), (int) Handler.crosshairList.get(0).getY(), Game.chargePower);
-                //Handler.removeCrosshair();
+                Handler.removeCrosshair();
                 Game.charging = false;
             }
         }

@@ -1,6 +1,7 @@
 package tmp;
 
 import GameObjects.Penguin;
+import GameObjects.StageChunk;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -115,7 +116,7 @@ public class Game extends Canvas implements Runnable {
                 if(pengColorRoll >= 0.8) { pengColor++; }
                 if(pengColorRoll >= 0.9) { pengColor++; }
 
-                Handler.addPenguin(new Penguin((int) (Math.random() * sWidth), -79, pengColor));
+                Handler.addPenguin(new Penguin((int) (Math.random() * sWidth), -79, pengColor, false));
                 menuPenguinTimer = 0;
             }
         }
@@ -148,7 +149,14 @@ public class Game extends Canvas implements Runnable {
     }
 
     public static void beginGame(int level) {
-        Handler.addPenguin(new Penguin(50, sHeight / 2, 0));
+        Handler.stageList.add(new StageChunk(0, 0, 1280, 100));
+        Handler.stageList.add(new StageChunk(0, sHeight - 82, 1280, 82));
+        Handler.stageList.add(new StageChunk(1186, 100, 94, 143));
+        Handler.stageList.add(new StageChunk(1186, 470, 94, 471));
+        Handler.stageList.add(new StageChunk(-100, 0, 100, 1280));
+        Handler.findTotalLevelArea();
+
+        Handler.addPenguin(new Penguin(50, sHeight / 2, 0, true));
     }
 
     public static boolean isPointInBounds(int mx, int my, int x, int y, int width, int height) {
