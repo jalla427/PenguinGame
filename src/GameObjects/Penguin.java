@@ -83,6 +83,9 @@ public class Penguin extends GameObject {
     }
 
     protected void handleCollision() {
+        boolean collidedStageX = false;
+        boolean collidedStageY = false;
+
         //Stage collisions
         Area a1;
         Area a2 = Handler.currentLevelArea;
@@ -96,6 +99,7 @@ public class Penguin extends GameObject {
         a1.intersect(a2);
 
         if(!a1.isEmpty()) {
+            System.out.println("Stage X collision");
             //Reverse bad movement
             this.x -= this.velX * Game.deltaTime;
             updateCollision();
@@ -116,6 +120,10 @@ public class Penguin extends GameObject {
             this.x -= Math.signum(this.velX);
             updateCollision();
             this.velX = -this.velX;
+            collidedStageX = true;
+        } else {
+            //No stage collisions, walk back move. Will be checked again against penguins
+            this.x -= this.velX * Game.deltaTime;
         }
 
         //Vertical collisions
@@ -127,6 +135,7 @@ public class Penguin extends GameObject {
         a1.intersect(a2);
 
         if(!a1.isEmpty()) {
+            System.out.println("Stage Y collision");
             //Reverse bad movement
             this.y -= this.velY * Game.deltaTime;
             updateCollision();
@@ -136,7 +145,7 @@ public class Penguin extends GameObject {
 
             //Move to the wall slowly until overlapping by one pixel
             while(a1.isEmpty()) {
-                y += Math.signum(this.velY);
+                this.y += Math.signum(this.velY);
                 updateCollision();
                 a1.reset();
                 a1 = new Area(this.collision);
@@ -147,7 +156,98 @@ public class Penguin extends GameObject {
             this.y -= Math.signum(this.velY);
             updateCollision();
             this.velY = -this.velY;
+            collidedStageY = true;
+        } else {
+            //No stage collisions, walk back move. Will be checked again against penguins
+            this.y -= this.velY * Game.deltaTime;
         }
+
+        //Penguin collisions
+        for(Penguin penguin:Handler.penguinList) {
+            if(penguin == this) { continue; }
+
+            a2 = new Area(penguin.getBounds());
+
+            //Horizontal collisions
+            if(!collidedStageX) {
+                this.x += this.velX * Game.deltaTime;
+                updateCollision();
+
+                //Find area shared by penguins
+                a1 = new Area(this.collision);
+                a1.intersect(a2);
+
+                if(!a1.isEmpty()) {
+                    System.out.println("Penguin X collision");
+                    //Reverse bad movement
+                    this.x -= this.velX * Game.deltaTime;
+                    updateCollision();
+                    a1.reset();
+                    a1 = new Area(this.collision);
+                    a1.intersect(a2);
+
+                    //Move to slowly until overlapping by one pixel
+                    while(a1.isEmpty()) {
+                        this.x += Math.signum(this.velX);
+                        updateCollision();
+                        a1.reset();
+                        a1 = new Area(this.collision);
+                        a1.intersect(a2);
+                    }
+
+                    //Position one pixel outside
+                    this.x -= Math.signum(this.velX);
+                    updateCollision();
+                    this.velX = -this.velX;
+                    collidedStageX = true;
+                } else {
+                    //No collisions, walk back move. Will be checked again against remaining penguins
+                    this.x -= this.velX * Game.deltaTime;
+                }
+            }
+
+            //Vertical collisions
+            if(!collidedStageY) {
+                this.y += this.velY * Game.deltaTime;
+                updateCollision();
+
+                //Find area shared by penguins
+                a1 = new Area(this.collision);
+                a1.intersect(a2);
+
+                if(!a1.isEmpty()) {
+                    System.out.println("Penguin Y collision");
+                    //Reverse bad movement
+                    this.y -= this.velY * Game.deltaTime;
+                    updateCollision();
+                    a1.reset();
+                    a1 = new Area(this.collision);
+                    a1.intersect(a2);
+
+                    //Move to slowly until overlapping by one pixel
+                    while(a1.isEmpty()) {
+                        this.y += Math.signum(this.velY);
+                        updateCollision();
+                        a1.reset();
+                        a1 = new Area(this.collision);
+                        a1.intersect(a2);
+                    }
+
+                    //Position one pixel outside
+                    this.y -= Math.signum(this.velY);
+                    updateCollision();
+                    this.velY = -this.velY;
+                    collidedStageY = true;
+                } else {
+                    //No collisions, walk back move. Will be checked again against remaining penguins
+                    this.y -= this.velY * Game.deltaTime;
+                }
+            }
+        }
+
+        //If no collisions were found on an axis, allow the move
+        if(!collidedStageX) { this.x += this.velX * Game.deltaTime; }
+        if(!collidedStageY) { this.y += this.velY * Game.deltaTime; }
     }
 
     private void applyFriction() {
