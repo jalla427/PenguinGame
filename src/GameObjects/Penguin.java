@@ -13,6 +13,7 @@ public class Penguin extends GameObject {
     public int animationFrame;
     public float animationTimer = 0;
     public boolean cueBall = false;
+    double friction = 0.001;
 
     private Polygon collision;
     private int[] xCollision;
@@ -22,6 +23,7 @@ public class Penguin extends GameObject {
         super(x, y, 65, 65, ID.Penguin);
         this.color = color; //0 = normal, 1 = blue, 2 = red, 3 = green
         this.animationFrame = 1;
+        this.cueBall = cueBall;
 
         if(Game.gameState == Game.STATE.Game) {
             updateCollision();
@@ -40,6 +42,7 @@ public class Penguin extends GameObject {
             handleCollision();
             updateCollision();
             collision.invalidate();
+            applyFriction();
         }
     }
 
@@ -125,25 +128,39 @@ public class Penguin extends GameObject {
 
         if(!a1.isEmpty()) {
             //Reverse bad movement
-            y -= velY * Game.deltaTime;
+            this.y -= this.velY * Game.deltaTime;
             updateCollision();
             a1.reset();
-            a1 = new Area(collision);
+            a1 = new Area(this.collision);
             a1.intersect(a2);
 
             //Move to the wall slowly until overlapping by one pixel
             while(a1.isEmpty()) {
-                y += Math.signum(velY);
+                y += Math.signum(this.velY);
                 updateCollision();
                 a1.reset();
-                a1 = new Area(collision);
+                a1 = new Area(this.collision);
                 a1.intersect(a2);
             }
 
             //Position one pixel outside of wall
-            y -= Math.signum(velY);
+            this.y -= Math.signum(this.velY);
             updateCollision();
-            velY = -velY;
+            this.velY = -this.velY;
+        }
+    }
+
+    private void applyFriction() {
+        double decay = Math.exp(-this.friction * Game.deltaTime);
+
+        this.velX *= decay;
+        this.velY *= decay;
+        this.friction *= 1.00005;
+
+        if(Math.abs(this.velX) < 0.04 && Math.abs(this.velY) < 0.04) {
+            this.velX = 0;
+            this.velY = 0;
+            this.friction = 0.001;
         }
     }
 
@@ -154,9 +171,11 @@ public class Penguin extends GameObject {
 
         this.velX = (float) (Math.cos(angle) * speed);
         this.velY = (float) (Math.sin(angle) * speed);
+
+        this.cueBall = false;
     }
 
     public Polygon getBounds() {
-        return null;
+        return this.collision;
     }
 }

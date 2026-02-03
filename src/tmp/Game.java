@@ -116,7 +116,7 @@ public class Game extends Canvas implements Runnable {
                 if(pengColorRoll >= 0.8) { pengColor++; }
                 if(pengColorRoll >= 0.9) { pengColor++; }
 
-                Handler.addPenguin(new Penguin((int) (Math.random() * sWidth), -79, pengColor, false));
+                Handler.addPenguin(new Penguin((int) (Math.random() * sWidth), -79, pengColor, true));
                 menuPenguinTimer = 0;
             }
         }
@@ -156,12 +156,27 @@ public class Game extends Canvas implements Runnable {
         Handler.stageList.add(new StageChunk(-100, 0, 100, 1280));
         Handler.findTotalLevelArea();
 
-        Handler.addPenguin(new Penguin(50, sHeight / 2, 0, true));
+        Handler.setNewCueBallPenguin();
     }
 
     public static boolean isPointInBounds(int mx, int my, int x, int y, int width, int height) {
         return mx > x && mx < x + width && my > y && my < y + height;
     }
 
+    public static float clamp(float value, float min, float max) {
+        if(value > max) {
+            return max;
+        } else if(value < min) {
+            return min;
+        } else return value;
+    }
+
+    public static int clamp(int value, int min, int max) {
+        if(value > max) {
+            return max;
+        } else if(value < min) {
+            return min;
+        } else return value;
+    }
 
 }

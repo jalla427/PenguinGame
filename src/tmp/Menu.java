@@ -44,7 +44,7 @@ public class Menu extends MouseAdapter {
 
         if(Game.gameState == Game.STATE.Game) {
             //Place crosshair marker
-            if(my > 100 && my < (Game.sHeight - 106) && mx > 18 && mx < Game.sWidth - 21 && SwingUtilities.isLeftMouseButton(e)) {
+            if(my > 100 && my < (Game.sHeight - 106) && mx > 18 && mx < Game.sWidth - 21 && SwingUtilities.isLeftMouseButton(e) && !Handler.arePenguinsMoving()) {
                 if(Handler.areCrosshair()) { Handler.removeCrosshair(); }
                 Handler.addCrosshair(mx - 12, my - 12);
             }
@@ -96,7 +96,7 @@ public class Menu extends MouseAdapter {
         if(Game.gameState == Game.STATE.Game) {
             //Launch
             if(Handler.areCrosshair() && SwingUtilities.isRightMouseButton(e)) {
-                Handler.penguinList.get(0).launch((int) Handler.crosshairList.get(0).getX(), (int) Handler.crosshairList.get(0).getY(), Game.chargePower);
+                Handler.cueBallPenguin.launch((int) Handler.crosshairList.get(0).getX(), (int) Handler.crosshairList.get(0).getY(), Game.chargePower);
                 Handler.removeCrosshair();
                 Game.charging = false;
             }

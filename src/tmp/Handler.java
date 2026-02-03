@@ -7,6 +7,7 @@ import MenuItems.Button;
 import java.awt.*;
 import java.awt.geom.Area;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class Handler {
     public static ArrayList<Button> buttonList = new ArrayList<>(5);
@@ -14,6 +15,7 @@ public class Handler {
     public static ArrayList<Crosshair> crosshairList = new ArrayList<>(1);
     public static ArrayList<StageChunk> stageList = new ArrayList<>(5);
     public static Area currentLevelArea = null;
+    public static Penguin cueBallPenguin = null;
 
     public static void tick() {
         if(Game.gameState == Game.STATE.Menu) {
@@ -32,6 +34,11 @@ public class Handler {
             for(int i = 0; i < penguinList.size(); i++) {
                 penguinList.get(i).tick();
             }
+            if(cueBallPenguin != null) {
+                if (!arePenguinsMoving() && !cueBallPenguin.cueBall) {
+                    setNewCueBallPenguin();
+                }
+            }
         }
     }
 
@@ -42,6 +49,7 @@ public class Handler {
     }
 
     public static void renderMiddleElements(Graphics g) {
+        penguinList.sort(Comparator.comparing(Penguin::getY));
         if(Game.gameState == Game.STATE.Menu || Game.gameState == Game.STATE.Game) {
             for(int i = 0; i < penguinList.size(); i++) {
                 penguinList.get(i).render(g);
@@ -80,6 +88,18 @@ public class Handler {
             }
         }
         currentLevelArea = combinedLevel;
+    }
+
+    public static void setNewCueBallPenguin() {
+        cueBallPenguin = new Penguin(50, (float) Game.sHeight / 2, 0, true);
+        addPenguin(Handler.cueBallPenguin);
+    }
+
+    public static boolean arePenguinsMoving() {
+        for(Penguin penguin:penguinList) {
+            if(penguin.getVelX() != 0 || penguin.getVelY() != 0) { return true; }
+        }
+        return false;
     }
 
     public static void clearButtons() {
