@@ -13,6 +13,7 @@ import javax.swing.*;
 public class Menu extends MouseAdapter {
 
     public static Font mainButtonFont = new Font("SansSerif", Font.BOLD, 32);
+    public static Font smallButtonFont = new Font("SansSerif", Font.BOLD, 20);
 
     public Menu() {}
 
@@ -43,6 +44,16 @@ public class Menu extends MouseAdapter {
         }
 
         if(Game.gameState == Game.STATE.Game) {
+            //Game buttons
+            if(buttonClicked != null) {
+                if(buttonClicked.getName() == "RESET") {
+                    buttonClicked.isClicked = true;
+                }
+                if(buttonClicked.getName() == "MENU") {
+                    buttonClicked.isClicked = true;
+                }
+            }
+
             //Place crosshair marker
             if(my > 100 && my < (Game.sHeight - 106) && mx > 18 && mx < Game.sWidth - 21 && SwingUtilities.isLeftMouseButton(e) && !Handler.arePenguinsMoving()) {
                 if(Handler.areCrosshair()) { Handler.removeCrosshair(); }
@@ -61,11 +72,9 @@ public class Menu extends MouseAdapter {
         int my = e.getY();
         Button buttonClicked = Handler.getButtonAtLocation(mx, my);
 
-        if(Game.gameState == Game.STATE.Menu) {
-            //All buttons
-            for (int i = 0; i < Handler.buttonList.size(); i++) {
-                Handler.buttonList.get(i).isClicked = false;
-            }
+        //All buttons
+        for (int i = 0; i < Handler.buttonList.size(); i++) {
+            Handler.buttonList.get(i).isClicked = false;
         }
 
         if(Game.gameState == Game.STATE.Menu && buttonClicked != null) {
@@ -94,11 +103,23 @@ public class Menu extends MouseAdapter {
         }
 
         if(Game.gameState == Game.STATE.Game) {
+            //Reset
+            if(buttonClicked != null) {
+                if(buttonClicked.getName() == "RESET") {
+                    Game.resetBoard();
+                }
+                if(buttonClicked.getName() == "MENU") {
+                    Game.clearGameElements();
+                    Game.gameState = Game.STATE.Menu;
+                }
+            }
+
             //Launch
             if(Handler.areCrosshair() && SwingUtilities.isRightMouseButton(e)) {
                 Handler.cueBallPenguin.launch((int) Handler.crosshairList.get(0).getX(), (int) Handler.crosshairList.get(0).getY(), Game.chargePower);
                 Handler.removeCrosshair();
                 Game.charging = false;
+                Game.chargePower = 0;
             }
         }
     }
@@ -116,6 +137,12 @@ public class Menu extends MouseAdapter {
         //Create controls menu buttons
         if(Game.gameState == Game.STATE.Controls && !buttonsFound) {
             Handler.addButton(new ImageTextButton(mainButtonFont, Color.black, "BACK", Game.button_menu_200x120, Game.button_menu_hover_200x120, (Game.sWidth / 2) - 100, Game.sHeight - 150, 200, 120));
+        }
+
+        //Create in-game buttons
+        if(Game.gameState == Game.STATE.Game && !buttonsFound) {
+            Handler.addButton(new ImageTextButton(smallButtonFont, Color.black, "RESET", Game.button_retry_95x47, Game.button_retry_pressed_95x47, Game.sWidth - 93, 615, 95, 47));
+            Handler.addButton(new ImageTextButton(smallButtonFont, Color.black, "MENU", Game.button_menu_95x47, Game.button_menu_pressed_95x47, Game.sWidth - 93, 663, 95, 47));
         }
     }
 }

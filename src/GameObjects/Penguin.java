@@ -39,6 +39,11 @@ public class Penguin extends GameObject {
         }
 
         if(Game.gameState == Game.STATE.Game && Handler.currentLevelArea != null) {
+            //Remove if penguin is out of bounds
+            if(((this.x + this.width) > Game.sWidth || (this.x + this.width) < 100)) {
+                if(this.color == 0) { Handler.penguinList.remove(this); }
+            }
+
             handleCollision();
             updateCollision();
             collision.invalidate();
@@ -99,7 +104,6 @@ public class Penguin extends GameObject {
         a1.intersect(a2);
 
         if(!a1.isEmpty()) {
-            System.out.println("Stage X collision");
             //Reverse bad movement
             this.x -= this.velX * Game.deltaTime;
             updateCollision();
@@ -135,7 +139,6 @@ public class Penguin extends GameObject {
         a1.intersect(a2);
 
         if(!a1.isEmpty()) {
-            System.out.println("Stage Y collision");
             //Reverse bad movement
             this.y -= this.velY * Game.deltaTime;
             updateCollision();
@@ -178,7 +181,6 @@ public class Penguin extends GameObject {
                 a1.intersect(a2);
 
                 if(!a1.isEmpty()) {
-                    System.out.println("Penguin X collision");
                     //Reverse bad movement
                     this.x -= this.velX * Game.deltaTime;
                     updateCollision();
@@ -198,7 +200,14 @@ public class Penguin extends GameObject {
                     //Position one pixel outside
                     this.x -= Math.signum(this.velX);
                     updateCollision();
-                    this.velX = -this.velX;
+
+                    //Split the velocity between the two affected penguins
+                    penguin.velX = 3 * (this.velX / 4);
+                    this.velX = -this.velX / 4;
+                    if(penguin.velY == 0) {
+                        penguin.velY = -this.velY / 2;
+                    }
+
                     collidedStageX = true;
                 } else {
                     //No collisions, walk back move. Will be checked again against remaining penguins
@@ -216,7 +225,6 @@ public class Penguin extends GameObject {
                 a1.intersect(a2);
 
                 if(!a1.isEmpty()) {
-                    System.out.println("Penguin Y collision");
                     //Reverse bad movement
                     this.y -= this.velY * Game.deltaTime;
                     updateCollision();
@@ -236,7 +244,15 @@ public class Penguin extends GameObject {
                     //Position one pixel outside
                     this.y -= Math.signum(this.velY);
                     updateCollision();
-                    this.velY = -this.velY;
+
+                    //Split the velocity between the two affected penguins
+                    penguin.velY = 3 * (this.velY / 4);
+                    this.velY = -this.velY / 4;
+
+                    if(penguin.velX == 0) {
+                        penguin.velX = -this.velX / 2;
+                    }
+
                     collidedStageY = true;
                 } else {
                     //No collisions, walk back move. Will be checked again against remaining penguins

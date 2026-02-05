@@ -25,6 +25,10 @@ public class Game extends Canvas implements Runnable {
     public static BufferedImage crosshair_25x25;
     public static BufferedImage button_menu_200x120;
     public static BufferedImage button_menu_hover_200x120;
+    public static BufferedImage button_retry_95x47;
+    public static BufferedImage button_retry_pressed_95x47;
+    public static BufferedImage button_menu_95x47;
+    public static BufferedImage button_menu_pressed_95x47;
 
     //Rendering vars
     BufferStrategy bs;
@@ -35,7 +39,7 @@ public class Game extends Canvas implements Runnable {
     private static float menuPenguinTimer = 150;
 
     //Gameplay vars
-    public static float chargePower = 5;
+    public static float chargePower = 0;
     public static boolean charging = false;
 
     //Used for determining the current scene
@@ -58,6 +62,10 @@ public class Game extends Canvas implements Runnable {
         crosshair_25x25 = loader.loadImage("/crosshair_25x25.png");
         button_menu_200x120 = loader.loadImage("/button_menu_200x120.png");
         button_menu_hover_200x120 = loader.loadImage("/button_menu_hover_200x120.png");
+        button_retry_95x47 = loader.loadImage("/button_retry_95x47.png");
+        button_retry_pressed_95x47 = loader.loadImage("/button_retry_pressed_95x47.png");
+        button_menu_95x47 = loader.loadImage("/button_menu_95x47.png");
+        button_menu_pressed_95x47 = loader.loadImage("/button_menu_pressed_95x47.png");
 
         //Create core objects
         menu = new Menu();
@@ -65,7 +73,7 @@ public class Game extends Canvas implements Runnable {
         this.addMouseListener(menu);
 
         //Start game
-        new Main("Penguin Bowling", this);
+        new Main("Penguin Pool", this);
     }
 
     public synchronized void start() {
@@ -121,6 +129,14 @@ public class Game extends Canvas implements Runnable {
             }
         }
 
+        if(gameState == STATE.Game) {
+            if(charging) {
+                chargePower += 0.05 * deltaTime;
+                chargePower = clamp(chargePower, 0, 10);
+                System.out.println("Charge: " + chargePower);
+            }
+        }
+
         Handler.tick();
     }
 
@@ -157,6 +173,27 @@ public class Game extends Canvas implements Runnable {
         Handler.findTotalLevelArea();
 
         Handler.setNewCueBallPenguin();
+    }
+
+    public static void resetBoard() {
+        Handler.clearPenguins();
+        Handler.removeCrosshair();
+        Handler.clearButtons();
+
+        charging = false;
+        chargePower = 0;
+
+        Handler.setNewCueBallPenguin();
+    }
+
+    public static void clearGameElements() {
+        Handler.clearPenguins();
+        Handler.removeCrosshair();
+        Handler.clearButtons();
+        Handler.clearStageBoundaries();
+
+        charging = false;
+        chargePower = 0;
     }
 
     public static boolean isPointInBounds(int mx, int my, int x, int y, int width, int height) {

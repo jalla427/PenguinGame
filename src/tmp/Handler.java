@@ -72,10 +72,9 @@ public class Handler {
                 if(areCrosshair()) { crosshairList.get(i).render(g); }
             }
         }
-        if(Game.gameState == Game.STATE.Menu || Game.gameState == Game.STATE.Controls) {
-            for(int i = 0; i < buttonList.size(); i++) {
-                buttonList.get(i).render(g);
-            }
+
+        for(int i = 0; i < buttonList.size(); i++) {
+            buttonList.get(i).render(g);
         }
     }
 
@@ -90,16 +89,14 @@ public class Handler {
         currentLevelArea = combinedLevel;
     }
 
-    public static void setNewCueBallPenguin() {
-        cueBallPenguin = new Penguin(50, (float) Game.sHeight / 2, 0, true);
-        addPenguin(Handler.cueBallPenguin);
-    }
-
-    public static boolean arePenguinsMoving() {
-        for(Penguin penguin:penguinList) {
-            if(penguin.getVelX() != 0 || penguin.getVelY() != 0) { return true; }
+    public static void clearStageBoundaries() {
+        while(areStageBoundaries()) {
+            stageList.remove(0);
         }
-        return false;
+    }
+    public static boolean areStageBoundaries() {
+        if(stageList.isEmpty()) { return false; }
+        return true;
     }
 
     public static void clearButtons() {
@@ -122,10 +119,22 @@ public class Handler {
         return null;
     }
 
+    public static void setNewCueBallPenguin() {
+        cueBallPenguin = new Penguin(50, (float) Game.sHeight / 2, 0, true);
+        addPenguin(Handler.cueBallPenguin);
+    }
+
+    public static boolean arePenguinsMoving() {
+        for(Penguin penguin:penguinList) {
+            if(penguin.getVelX() != 0 || penguin.getVelY() != 0) { return true; }
+        }
+        return false;
+    }
     public static void clearPenguins() {
         while(arePenguins()) {
             penguinList.remove(0);
         }
+        cueBallPenguin = null;
     }
     public static boolean arePenguins() { return !penguinList.isEmpty(); }
     public static void addPenguin(Penguin penguin) { penguinList.add(penguin); }
