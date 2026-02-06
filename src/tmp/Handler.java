@@ -17,6 +17,8 @@ public class Handler {
     public static Area currentLevelArea = null;
     public static Penguin cueBallPenguin = null;
 
+    private static int greenValue = 255;
+
     public static void tick() {
         if(Game.gameState == Game.STATE.Menu) {
             for(int i = 0; i < buttonList.size(); i++) {
@@ -68,6 +70,14 @@ public class Handler {
 
     public static void renderHigherElements(Graphics g) {
         if(Game.gameState == Game.STATE.Game) {
+            //Charge Meter
+            g.setColor(Color.lightGray);
+            g.fillRect(59, 663, 191, 47);
+            greenValue = Game.clamp((int) (255 - ((Game.chargePower / 10) * 255)), 0, 255);
+            g.setColor(new Color(75, greenValue, 0));
+            g.fillRect(59, 663, (int) (Game.chargePower * 19.1), 47);
+
+            //Crosshair
             for(int i = 0; i < crosshairList.size(); i++) {
                 if(areCrosshair()) { crosshairList.get(i).render(g); }
             }

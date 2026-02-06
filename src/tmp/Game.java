@@ -29,6 +29,8 @@ public class Game extends Canvas implements Runnable {
     public static BufferedImage button_retry_pressed_95x47;
     public static BufferedImage button_menu_95x47;
     public static BufferedImage button_menu_pressed_95x47;
+    public static BufferedImage overlay_launch_191x47;
+    public static BufferedImage overlay_launch_label_191x47;
 
     //Rendering vars
     BufferStrategy bs;
@@ -66,10 +68,11 @@ public class Game extends Canvas implements Runnable {
         button_retry_pressed_95x47 = loader.loadImage("/button_retry_pressed_95x47.png");
         button_menu_95x47 = loader.loadImage("/button_menu_95x47.png");
         button_menu_pressed_95x47 = loader.loadImage("/button_menu_pressed_95x47.png");
+        overlay_launch_191x47 = loader.loadImage("/overlay_launch_191x47.png");
+        overlay_launch_label_191x47 = loader.loadImage("/overlay_launch_label_191x47.png");
 
         //Create core objects
         menu = new Menu();
-        //this.addKeyListener(new KeyInput());
         this.addMouseListener(menu);
 
         //Start game
@@ -133,7 +136,6 @@ public class Game extends Canvas implements Runnable {
             if(charging) {
                 chargePower += 0.05 * deltaTime;
                 chargePower = clamp(chargePower, 0, 10);
-                System.out.println("Charge: " + chargePower);
             }
         }
 
@@ -215,5 +217,4 @@ public class Game extends Canvas implements Runnable {
             return min;
         } else return value;
     }
-
 }

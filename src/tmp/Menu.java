@@ -143,6 +143,8 @@ public class Menu extends MouseAdapter {
         if(Game.gameState == Game.STATE.Game && !buttonsFound) {
             Handler.addButton(new ImageTextButton(smallButtonFont, Color.black, "RESET", Game.button_retry_95x47, Game.button_retry_pressed_95x47, Game.sWidth - 93, 615, 95, 47));
             Handler.addButton(new ImageTextButton(smallButtonFont, Color.black, "MENU", Game.button_menu_95x47, Game.button_menu_pressed_95x47, Game.sWidth - 93, 663, 95, 47));
+            Handler.addButton(new ImageButton("LAUNCH_OVERLAY", Game.overlay_launch_191x47, Game.overlay_launch_191x47, 59, 663, 191, 47));
+            Handler.addButton(new ImageTextButton(smallButtonFont, Color.black, "LAUNCH POWER", Game.overlay_launch_label_191x47, Game.overlay_launch_label_191x47, 59, 615, 191, 47));
         }
     }
 }

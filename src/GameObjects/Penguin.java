@@ -52,6 +52,8 @@ public class Penguin extends GameObject {
     }
 
     public void render(Graphics g) {
+        float rotateSpeed = Game.clamp((Math.max(Math.abs(this.velY), Math.abs(this.velX)) / 10) * 3, (float) 0.5, 10);
+
         if(Game.gameState == Game.STATE.Menu) {
             this.animationTimer += 1 * Game.deltaTime;
             if(this.animationTimer >= 3) {
@@ -64,7 +66,7 @@ public class Penguin extends GameObject {
         }
 
         if(Game.gameState == Game.STATE.Game) {
-            this.animationTimer += 1 * Game.deltaTime;
+            this.animationTimer += rotateSpeed * Game.deltaTime;
             if(this.animationTimer >= 3) {
                 if(this.velX > 0) { this.animationFrame++; }
                 if(this.velX < 0) { this.animationFrame--; }
