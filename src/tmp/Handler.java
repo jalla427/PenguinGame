@@ -14,6 +14,7 @@ public class Handler {
     public static ArrayList<Penguin> penguinList = new ArrayList<>(20);
     public static ArrayList<Crosshair> crosshairList = new ArrayList<>(1);
     public static ArrayList<StageChunk> stageList = new ArrayList<>(5);
+    public static GoalZone goalZone;
     public static Area currentLevelArea = null;
     public static Penguin cueBallPenguin = null;
 
@@ -40,6 +41,9 @@ public class Handler {
                 if (!arePenguinsMoving() && !cueBallPenguin.cueBall) {
                     setNewCueBallPenguin();
                 }
+            }
+            if(!Game.levelComplete && goalZone != null) {
+                goalZone.tick();
             }
         }
     }

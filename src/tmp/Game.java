@@ -1,5 +1,6 @@
 package tmp;
 
+import GameObjects.GoalZone;
 import GameObjects.Penguin;
 import GameObjects.StageChunk;
 
@@ -39,6 +40,12 @@ public class Game extends Canvas implements Runnable {
     //Menu vars
     protected Menu menu;
     private static float menuPenguinTimer = 150;
+
+    //Score & Level vars
+    public static int sequenceTarget = 1;
+    public static int[] sequence = new int[] { 1 };
+    public static int currentPar = 1;
+    public static boolean levelComplete = false;
 
     //Gameplay vars
     public static float chargePower = 0;
@@ -175,6 +182,8 @@ public class Game extends Canvas implements Runnable {
         Handler.findTotalLevelArea();
 
         Handler.setNewCueBallPenguin();
+
+        Handler.goalZone = new GoalZone(Game.sWidth - 94, 243, 94, 227);
     }
 
     public static void resetBoard() {

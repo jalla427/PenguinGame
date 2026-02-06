@@ -4,5 +4,6 @@ public enum ID {
     Penguin(),
     Crosshair(),
     Level(),
+    Goal(),
     Button()
 }
