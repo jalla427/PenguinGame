@@ -210,8 +210,8 @@ public class Game extends Canvas implements Runnable {
         Handler.setNewCueBallPenguin();
         Handler.goalZone = new GoalZone(Game.sWidth - 94, 243, 94, 227);
 
-        currentPar = LevelCollection.getLevelPar(level);
-        LevelCollection.setupLevel(currentLevel);
+        currentPar = LevelCollection.getLevelPar(6);
+        LevelCollection.setupLevel(6);
     }
 
     public static void resetBoard() {

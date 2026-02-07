@@ -110,7 +110,7 @@ public class Menu extends MouseAdapter {
             if(buttonClicked != null) {
                 if(buttonClicked.getName() == "RESET") {
                     AudioPlayer.playSound("/buttonClick.wav");
-                    Game.resetBoard();
+                    Handler.resetTrigger = true;
                 }
                 if(buttonClicked.getName() == "MENU") {
                     AudioPlayer.playSound("/buttonClick.wav");

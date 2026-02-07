@@ -20,22 +20,32 @@ public class GoalZone extends GameObject {
         Area a1;
         Area a2;
 
+        boolean inGoal = false;
+        Penguin hitPenguin = null;
+
         for(Penguin penguin:Handler.penguinList) {
             a1 = new Area(this.collision);
             a2 = new Area(penguin.getBounds());
             a1.intersect(a2);
 
-            if(!a1.isEmpty() && penguin.color == Game.currentSequence[Game.sequenceTarget - 1]) {
-                Handler.removePenguin(penguin);
+            if(!a1.isEmpty()) {
+                inGoal = true;
+                hitPenguin = penguin;
+                break;
+            }
+        }
+
+        if(inGoal) {
+            if (hitPenguin.color == Game.currentSequence[Game.sequenceTarget - 1]) {
+                Handler.removePenguin(hitPenguin);
                 AudioPlayer.playSound("/goal.wav");
                 Game.sequenceTarget++;
-                if(Game.sequenceTarget > Game.currentSequence.length) {
+                if (Game.sequenceTarget > Game.currentSequence.length) {
                     Game.levelComplete = true;
                     Game.passed = true;
                     Game.sequenceTarget = 1;
                 }
-                break;
-            } else if(!a1.isEmpty() && penguin.color != Game.currentSequence[Game.sequenceTarget - 1] && penguin.color != 0) {
+            } else if (hitPenguin.color != Game.currentSequence[Game.sequenceTarget - 1] && hitPenguin.color != 0) {
                 AudioPlayer.playRandomNeutralPenguinSound();
                 Game.levelComplete = true;
                 Game.passed = false;

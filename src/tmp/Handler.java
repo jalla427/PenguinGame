@@ -17,6 +17,7 @@ public class Handler {
     public static GoalZone goalZone;
     public static Area currentLevelArea = null;
     public static Penguin cueBallPenguin = null;
+    public static boolean resetTrigger = false;
 
     private static int greenValue = 255;
 
@@ -35,6 +36,10 @@ public class Handler {
 
         if(Game.gameState == Game.STATE.Game) {
             if(!Game.transitioning && !Game.levelComplete) {
+                if(resetTrigger) {
+                    Game.resetBoard();
+                    resetTrigger = false;
+                }
                 for (int i = 0; i < penguinList.size(); i++) {
                     penguinList.get(i).tick();
                 }
@@ -169,6 +174,8 @@ public class Handler {
 
     public static void setNewCueBallPenguin() {
         cueBallPenguin = new Penguin(50, (float) Game.sHeight / 2, 0, true);
+        Penguin hitPenguin = null;
+        boolean isHit = false;
 
         //Remove any penguins in the way
         for(Penguin penguin:penguinList) {
@@ -176,13 +183,20 @@ public class Handler {
             Area a2 = new Area(cueBallPenguin.getBounds());
 
             a1.intersect(a2);
+            if(!a1.isEmpty()) {
+                isHit = true;
+                hitPenguin = penguin;
+                break;
+            }
+        }
 
-            if(!a1.isEmpty() && penguin.color == 0) {
-                removePenguin(penguin);
-            } else if(!a1.isEmpty()) {
-                if(penguin.getY() >= cueBallPenguin.getY()) {
+        if(isHit) {
+            if(hitPenguin.color == 0) {
+                removePenguin(hitPenguin);
+            } else {
+                if(hitPenguin.getY() >= cueBallPenguin.getY()) {
                     cueBallPenguin.setY(cueBallPenguin.getY() - 100);
-                } else if(penguin.getY() < cueBallPenguin.getY()) {
+                } else if(hitPenguin.getY() < cueBallPenguin.getY()) {
                     cueBallPenguin.setY(cueBallPenguin.getY() + 100);
                 }
             }
