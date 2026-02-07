@@ -267,6 +267,12 @@ public class Penguin extends GameObject {
         //If no collisions were found on an axis, allow the move
         if(!collidedStageX) { this.x += this.velX * Game.deltaTime; }
         if(!collidedStageY) { this.y += this.velY * Game.deltaTime; }
+
+        //If penguin is too far out of bounds, kill velocity
+        if(this.x > Game.sWidth + 150) {
+            this.velX = 0;
+            this.velY = 0;
+        }
     }
 
     private void applyFriction() {

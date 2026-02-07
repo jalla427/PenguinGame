@@ -50,6 +50,7 @@ public class Game extends Canvas implements Runnable {
     public static int[] currentSequence = new int[] { 1 };
     public static int currentPar = 1;
     public static int strokes = 0;
+    public static boolean passed = false;
     public static boolean levelComplete = false;
     public static boolean transitioning = false;
 
@@ -60,7 +61,7 @@ public class Game extends Canvas implements Runnable {
     //Used for determining the current scene
     public enum STATE {
         Menu,
-        Controls,
+        About,
         Game
     }
 
@@ -131,6 +132,25 @@ public class Game extends Canvas implements Runnable {
     }
 
     private void tick() {
+        Handler.tick();
+
+        if(gameState == STATE.Game) {
+            if(levelComplete && !transitioning) {
+                //Update highscore if needed
+                if(passed && strokes < LevelCollection.getLevelBest(currentLevel)) {
+                    LevelCollection.setLevelBest(currentLevel, strokes);
+                }
+                //Set to transitioning state
+                transitioning = true;
+                levelComplete = false;
+                Handler.addButton(new ImageTextButton(Menu.mainButtonFont, Color.black, "CONTINUE", Game.button_menu_200x120, Game.button_menu_hover_200x120, (Game.sWidth / 2) - 100, (Game.sHeight / 2) + 70, 200, 120));
+            }
+            if(charging && !transitioning) {
+                chargePower += 0.05 * deltaTime;
+                chargePower = clamp(chargePower, 0, 10);
+            }
+        }
+
         menu.tick();
         if(gameState == STATE.Menu) {
             menuPenguinTimer += 1 * deltaTime;
@@ -146,25 +166,6 @@ public class Game extends Canvas implements Runnable {
                 menuPenguinTimer = 0;
             }
         }
-
-        if(gameState == STATE.Game) {
-            if(levelComplete && !transitioning) {
-                //Update highscore if needed
-                if(strokes > LevelCollection.getLevelBest(currentLevel)) {
-                    LevelCollection.setLevelBest(currentLevel, strokes);
-                }
-                //Set to transitioning state
-                transitioning = true;
-                levelComplete = false;
-                Handler.addButton(new ImageTextButton(Menu.mainButtonFont, Color.black, "CONTINUE", Game.button_menu_200x120, Game.button_menu_hover_200x120, (Game.sWidth / 2) - 100, (Game.sHeight / 2) + 70, 200, 120));
-            }
-            if(charging && !transitioning) {
-                chargePower += 0.05 * deltaTime;
-                chargePower = clamp(chargePower, 0, 10);
-            }
-        }
-
-        Handler.tick();
     }
 
     private void render() {
@@ -213,11 +214,14 @@ public class Game extends Canvas implements Runnable {
         charging = false;
         chargePower = 0;
         strokes = 0;
-        sequenceTarget = 1;
-        transitioning = false;
+        passed = false;
 
         Handler.setNewCueBallPenguin();
+
+        currentPar = LevelCollection.getLevelPar(currentLevel);
         LevelCollection.setupLevel(currentLevel);
+
+        transitioning = false;
     }
 
     public static void clearGameElements() {
@@ -231,6 +235,8 @@ public class Game extends Canvas implements Runnable {
         chargePower = 0;
         strokes = 0;
         sequenceTarget = 1;
+        passed = false;
+
         transitioning = false;
     }
 
@@ -241,6 +247,7 @@ public class Game extends Canvas implements Runnable {
         currentSequence = new int[] { 1 };
         sequenceTarget = 1;
         levelComplete = false;
+        passed = false;
     }
 
     public static boolean isPointInBounds(int mx, int my, int x, int y, int width, int height) {

@@ -34,7 +34,7 @@ public class Handler {
         }
 
         if(Game.gameState == Game.STATE.Game) {
-            if(!Game.transitioning) {
+            if(!Game.transitioning && !Game.levelComplete) {
                 for (int i = 0; i < penguinList.size(); i++) {
                     penguinList.get(i).tick();
                 }
@@ -43,7 +43,7 @@ public class Handler {
                         setNewCueBallPenguin();
                     }
                 }
-                if (!Game.levelComplete && goalZone != null) {
+                if (goalZone != null) {
                     goalZone.tick();
                 }
             }
@@ -92,14 +92,24 @@ public class Handler {
         for(int i = 0; i < buttonList.size(); i++) {
             if(Game.gameState == Game.STATE.Game) {
                 if(buttonList.get(i).getName() == "SCORE_DISPLAY") { buttonList.get(i).setText(Integer.toString(Game.strokes)); }
-                if(buttonList.get(i).getName() == "PAR_DISPLAY") { buttonList.get(i).setText(Integer.toString(LevelCollection.getLevelPar(Game.currentLevel))); }
+                if(buttonList.get(i).getName() == "PAR_DISPLAY") { buttonList.get(i).setText(Integer.toString(Game.currentPar)); }
                 if(buttonList.get(i).getName() == "BEST_DISPLAY") {
-                    if(LevelCollection.getLevelBest(Game.currentLevel) > 0) { buttonList.get(i).setText(Integer.toString(LevelCollection.getLevelBest(Game.currentLevel))); }
+                    if(LevelCollection.getLevelBest(Game.currentLevel) < 9999) { buttonList.get(i).setText(Integer.toString(LevelCollection.getLevelBest(Game.currentLevel))); }
                     else { buttonList.get(i).setText("?"); }
                 }
             }
 
             buttonList.get(i).render(g);
+        }
+
+        //Target Color
+        if(Game.gameState == Game.STATE.Game && !Game.transitioning) {
+            //0 = normal, 1 = blue, 2 = red, 3 = green
+            g.setColor(Color.white);
+            if(Game.currentSequence[Game.sequenceTarget - 1] == 1) { g.setColor(new Color(23, 21, 138)); }
+            if(Game.currentSequence[Game.sequenceTarget - 1] == 2) { g.setColor(new Color(138, 21, 21)); }
+            if(Game.currentSequence[Game.sequenceTarget - 1] == 3) { g.setColor(new Color(16, 107, 21)); }
+            g.fillRect(665, 669, 35, 35);
         }
     }
 

@@ -5,7 +5,7 @@ public class Level {
     int[] sequence;
     int[][] locations;
     int par;
-    int best = 0;
+    int best = 9999;
 
     public Level(int[] sequence, int[][] locations, int par) {
         this.sequence = sequence;

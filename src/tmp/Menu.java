@@ -6,7 +6,6 @@ import java.awt.event.MouseEvent;
 
 import MenuItems.*;
 import MenuItems.Button;
-import tmp.Handler;
 
 import javax.swing.*;
 
@@ -28,7 +27,7 @@ public class Menu extends MouseAdapter {
             if(buttonClicked.getName() == "PLAY") {
                 buttonClicked.isClicked = true;
             }
-            if(buttonClicked.getName() == "CONTROLS") {
+            if(buttonClicked.getName() == "ABOUT") {
                 buttonClicked.isClicked = true;
             }
             if(buttonClicked.getName() == "QUIT") {
@@ -36,7 +35,7 @@ public class Menu extends MouseAdapter {
             }
         }
 
-        if(Game.gameState == Game.STATE.Controls && buttonClicked != null) {
+        if(Game.gameState == Game.STATE.About && buttonClicked != null) {
             //Controls menu
             if(buttonClicked.getName() == "BACK") {
                 buttonClicked.isClicked = true;
@@ -85,16 +84,16 @@ public class Menu extends MouseAdapter {
                 Game.gameState = Game.STATE.Game;
                 Game.beginGame(1);
             }
-            if(buttonClicked.getName() == "CONTROLS") {
+            if(buttonClicked.getName() == "ABOUT") {
                 Handler.clearButtons();
-                Game.gameState = Game.STATE.Controls;
+                Game.gameState = Game.STATE.About;
             }
             if(buttonClicked.getName() == "QUIT") {
                 System.exit(1);
             }
         }
 
-        if(Game.gameState == Game.STATE.Controls && buttonClicked != null) {
+        if(Game.gameState == Game.STATE.About && buttonClicked != null) {
             //Controls menu
             if(buttonClicked.getName() == "BACK") {
                 Handler.clearButtons();
@@ -114,7 +113,7 @@ public class Menu extends MouseAdapter {
                     Game.gameState = Game.STATE.Menu;
                 }
                 if(buttonClicked.getName() == "CONTINUE" && Game.transitioning) {
-                    Game.currentLevel = Game.clamp(Game.currentLevel + 1, 1, LevelCollection.levels.length);
+                    if(Game.passed) { Game.currentLevel = Game.clamp(Game.currentLevel + 1, 1, LevelCollection.levels.length); }
                     Game.resetBoard();
                 }
             }
@@ -136,12 +135,12 @@ public class Menu extends MouseAdapter {
         //Create main menu buttons
         if(Game.gameState == Game.STATE.Menu && !buttonsFound) {
             Handler.addButton(new ImageTextButton(mainButtonFont, Color.black, "PLAY", Game.button_menu_200x120, Game.button_menu_hover_200x120, (Game.sWidth / 2) - 100, (Game.sHeight / 2) - 60, 200, 120));
-            Handler.addButton(new ImageTextButton(mainButtonFont, Color.black, "CONTROLS", Game.button_menu_200x120, Game.button_menu_hover_200x120, (Game.sWidth / 2) - 100, (Game.sHeight / 2) + 70, 200, 120));
+            Handler.addButton(new ImageTextButton(mainButtonFont, Color.black, "ABOUT", Game.button_menu_200x120, Game.button_menu_hover_200x120, (Game.sWidth / 2) - 100, (Game.sHeight / 2) + 70, 200, 120));
             Handler.addButton(new ImageTextButton(mainButtonFont, Color.black, "QUIT", Game.button_menu_200x120, Game.button_menu_hover_200x120, (Game.sWidth / 2) - 100, (Game.sHeight / 2) + 200, 200, 120));
         }
 
         //Create controls menu buttons
-        if(Game.gameState == Game.STATE.Controls && !buttonsFound) {
+        if(Game.gameState == Game.STATE.About && !buttonsFound) {
             Handler.addButton(new ImageTextButton(mainButtonFont, Color.black, "BACK", Game.button_menu_200x120, Game.button_menu_hover_200x120, (Game.sWidth / 2) - 100, Game.sHeight - 150, 200, 120));
         }
 
@@ -157,6 +156,8 @@ public class Menu extends MouseAdapter {
             Handler.addButton(new ImageTextDisplayButton(smallButtonFont, Color.black, "SCORE_DISPLAY", "0", Game.score_display_47x47, Game.score_display_47x47, 371, 663, 47, 47));
             Handler.addButton(new ImageTextDisplayButton(smallButtonFont, Color.black, "PAR_DISPLAY", "0", Game.score_display_47x47, Game.score_display_47x47, 467, 663, 47, 47));
             Handler.addButton(new ImageTextDisplayButton(smallButtonFont, Color.black, "BEST_DISPLAY", "0", Game.score_display_47x47, Game.score_display_47x47, 563, 663, 47, 47));
+            Handler.addButton(new ImageTextButton(smallButtonFont, Color.black, "TARGET", Game.score_label_95x47, Game.score_label_95x47, 635, 615, 95, 47));
+            Handler.addButton(new ImageTextDisplayButton(smallButtonFont, Color.black, "TARGET_DISPLAY", "", Game.score_display_47x47, Game.score_display_47x47, 659, 663, 47, 47));
         }
     }
 }

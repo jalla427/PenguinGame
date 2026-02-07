@@ -3,12 +3,10 @@ package GameObjects;
 import tmp.Game;
 import tmp.Handler;
 import tmp.ID;
+import tmp.LevelCollection;
 
 import java.awt.*;
 import java.awt.geom.Area;
-
-import static tmp.Game.currentSequence;
-import static tmp.Game.sequenceTarget;
 
 public class GoalZone extends GameObject {
 
@@ -30,12 +28,19 @@ public class GoalZone extends GameObject {
             a2 = new Area(penguin.getBounds());
             a1.intersect(a2);
 
-            if(!a1.isEmpty() && penguin.color == Game.currentSequence[sequenceTarget - 1]) {
-                sequenceTarget++;
-                if(sequenceTarget > currentSequence.length) {
+            if(!a1.isEmpty() && penguin.color == Game.currentSequence[Game.sequenceTarget - 1]) {
+                Handler.removePenguin(penguin);
+                Game.sequenceTarget++;
+                if(Game.sequenceTarget > Game.currentSequence.length) {
                     Game.levelComplete = true;
-                    sequenceTarget = 1;
+                    Game.passed = true;
+                    Game.sequenceTarget = 1;
                 }
+                break;
+            } else if(!a1.isEmpty() && penguin.color != Game.currentSequence[Game.sequenceTarget - 1] && penguin.color != 0) {
+                Game.levelComplete = true;
+                Game.passed = false;
+                Game.sequenceTarget = 1;
             }
         }
     }
