@@ -1,5 +1,6 @@
 package GameObjects;
 
+import tmp.AudioPlayer;
 import tmp.Game;
 import tmp.Handler;
 import tmp.ID;
@@ -267,6 +268,9 @@ public class Penguin extends GameObject {
         //If no collisions were found on an axis, allow the move
         if(!collidedStageX) { this.x += this.velX * Game.deltaTime; }
         if(!collidedStageY) { this.y += this.velY * Game.deltaTime; }
+
+        //If any collisions, play penguin noise
+        if((collidedStageX || collidedStageY) && this.velX != 0 && this.velY != 0) { AudioPlayer.playRandomNeutralPenguinSound(); }
 
         //If penguin is too far out of bounds, kill velocity
         if(this.x > Game.sWidth + 150) {
