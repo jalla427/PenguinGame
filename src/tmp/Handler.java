@@ -169,6 +169,25 @@ public class Handler {
 
     public static void setNewCueBallPenguin() {
         cueBallPenguin = new Penguin(50, (float) Game.sHeight / 2, 0, true);
+
+        //Remove any penguins in the way
+        for(Penguin penguin:penguinList) {
+            Area a1 = new Area(penguin.getBounds());
+            Area a2 = new Area(cueBallPenguin.getBounds());
+
+            a1.intersect(a2);
+
+            if(!a1.isEmpty() && penguin.color == 0) {
+                removePenguin(penguin);
+            } else if(!a1.isEmpty()) {
+                if(penguin.getY() >= cueBallPenguin.getY()) {
+                    cueBallPenguin.setY(cueBallPenguin.getY() - 100);
+                } else if(penguin.getY() < cueBallPenguin.getY()) {
+                    cueBallPenguin.setY(cueBallPenguin.getY() + 100);
+                }
+            }
+        }
+
         addPenguin(Handler.cueBallPenguin);
     }
 

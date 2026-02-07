@@ -1,9 +1,6 @@
 package GameObjects;
 
-import tmp.Game;
-import tmp.Handler;
-import tmp.ID;
-import tmp.LevelCollection;
+import tmp.*;
 
 import java.awt.*;
 import java.awt.geom.Area;
@@ -30,6 +27,7 @@ public class GoalZone extends GameObject {
 
             if(!a1.isEmpty() && penguin.color == Game.currentSequence[Game.sequenceTarget - 1]) {
                 Handler.removePenguin(penguin);
+                AudioPlayer.playSound("/goal.wav");
                 Game.sequenceTarget++;
                 if(Game.sequenceTarget > Game.currentSequence.length) {
                     Game.levelComplete = true;
@@ -38,6 +36,7 @@ public class GoalZone extends GameObject {
                 }
                 break;
             } else if(!a1.isEmpty() && penguin.color != Game.currentSequence[Game.sequenceTarget - 1] && penguin.color != 0) {
+                AudioPlayer.playRandomNeutralPenguinSound();
                 Game.levelComplete = true;
                 Game.passed = false;
                 Game.sequenceTarget = 1;

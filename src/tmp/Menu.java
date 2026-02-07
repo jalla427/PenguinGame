@@ -79,16 +79,19 @@ public class Menu extends MouseAdapter {
         if(Game.gameState == Game.STATE.Menu && buttonClicked != null) {
             //Main menu
             if(buttonClicked.getName() == "PLAY") {
+                AudioPlayer.playSound("/buttonClick.wav");
                 Handler.clearButtons();
                 Handler.clearPenguins();
                 Game.gameState = Game.STATE.Game;
                 Game.beginGame(1);
             }
             if(buttonClicked.getName() == "ABOUT") {
+                AudioPlayer.playSound("/buttonClick.wav");
                 Handler.clearButtons();
                 Game.gameState = Game.STATE.About;
             }
             if(buttonClicked.getName() == "QUIT") {
+                AudioPlayer.playSound("/buttonClick.wav");
                 System.exit(1);
             }
         }
@@ -96,6 +99,7 @@ public class Menu extends MouseAdapter {
         if(Game.gameState == Game.STATE.About && buttonClicked != null) {
             //Controls menu
             if(buttonClicked.getName() == "BACK") {
+                AudioPlayer.playSound("/buttonClick.wav");
                 Handler.clearButtons();
                 Game.gameState = Game.STATE.Menu;
             }
@@ -105,14 +109,17 @@ public class Menu extends MouseAdapter {
             //Reset
             if(buttonClicked != null) {
                 if(buttonClicked.getName() == "RESET") {
+                    AudioPlayer.playSound("/buttonClick.wav");
                     Game.resetBoard();
                 }
                 if(buttonClicked.getName() == "MENU") {
+                    AudioPlayer.playSound("/buttonClick.wav");
                     Game.clearGameElements();
                     Game.resetLevelVars();
                     Game.gameState = Game.STATE.Menu;
                 }
                 if(buttonClicked.getName() == "CONTINUE" && Game.transitioning) {
+                    AudioPlayer.playSound("/buttonClick.wav");
                     if(Game.passed) { Game.currentLevel = Game.clamp(Game.currentLevel + 1, 1, LevelCollection.levels.length); }
                     Game.resetBoard();
                 }

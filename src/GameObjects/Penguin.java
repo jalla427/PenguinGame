@@ -302,6 +302,8 @@ public class Penguin extends GameObject {
         this.velY = (float) (Math.sin(angle) * speed);
 
         this.cueBall = false;
+
+        AudioPlayer.playRandomNeutralPenguinSound();
     }
 
     public Polygon getBounds() {
