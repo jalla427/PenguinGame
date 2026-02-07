@@ -4,10 +4,10 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class ImageTextButton extends Button {
-    private Font font;
-    private Color color;
-    private final BufferedImage image;
-    private final BufferedImage clickedImage;
+    protected Font font;
+    protected Color color;
+    protected final BufferedImage image;
+    public final BufferedImage clickedImage;
 
     public ImageTextButton(Font font, Color textColor, String name, BufferedImage image, BufferedImage clickedImage, int x, int y, int width, int height) {
         super(name, x, y, width, height);

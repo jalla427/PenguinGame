@@ -110,7 +110,12 @@ public class Menu extends MouseAdapter {
                 }
                 if(buttonClicked.getName() == "MENU") {
                     Game.clearGameElements();
+                    Game.resetLevelVars();
                     Game.gameState = Game.STATE.Menu;
+                }
+                if(buttonClicked.getName() == "CONTINUE" && Game.transitioning) {
+                    Game.currentLevel = Game.clamp(Game.currentLevel + 1, 1, LevelCollection.levels.length);
+                    Game.resetBoard();
                 }
             }
 
@@ -120,6 +125,7 @@ public class Menu extends MouseAdapter {
                 Handler.removeCrosshair();
                 Game.charging = false;
                 Game.chargePower = 0;
+                Game.strokes++;
             }
         }
     }
@@ -145,6 +151,12 @@ public class Menu extends MouseAdapter {
             Handler.addButton(new ImageTextButton(smallButtonFont, Color.black, "MENU", Game.button_menu_95x47, Game.button_menu_pressed_95x47, Game.sWidth - 93, 663, 95, 47));
             Handler.addButton(new ImageButton("LAUNCH_OVERLAY", Game.overlay_launch_191x47, Game.overlay_launch_191x47, 59, 663, 191, 47));
             Handler.addButton(new ImageTextButton(smallButtonFont, Color.black, "LAUNCH POWER", Game.overlay_launch_label_191x47, Game.overlay_launch_label_191x47, 59, 615, 191, 47));
+            Handler.addButton(new ImageTextButton(smallButtonFont, Color.black, "SCORE", Game.score_label_95x47, Game.score_label_95x47, 347, 615, 95, 47));
+            Handler.addButton(new ImageTextButton(smallButtonFont, Color.black, "PAR", Game.score_label_95x47, Game.score_label_95x47, 443, 615, 95, 47));
+            Handler.addButton(new ImageTextButton(smallButtonFont, Color.black, "BEST", Game.score_label_95x47, Game.score_label_95x47, 539, 615, 95, 47));
+            Handler.addButton(new ImageTextDisplayButton(smallButtonFont, Color.black, "SCORE_DISPLAY", "0", Game.score_display_47x47, Game.score_display_47x47, 371, 663, 47, 47));
+            Handler.addButton(new ImageTextDisplayButton(smallButtonFont, Color.black, "PAR_DISPLAY", "0", Game.score_display_47x47, Game.score_display_47x47, 467, 663, 47, 47));
+            Handler.addButton(new ImageTextDisplayButton(smallButtonFont, Color.black, "BEST_DISPLAY", "0", Game.score_display_47x47, Game.score_display_47x47, 563, 663, 47, 47));
         }
     }
 }

@@ -3,6 +3,7 @@ package tmp;
 import GameObjects.GoalZone;
 import GameObjects.Penguin;
 import GameObjects.StageChunk;
+import MenuItems.ImageTextButton;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -32,6 +33,8 @@ public class Game extends Canvas implements Runnable {
     public static BufferedImage button_menu_pressed_95x47;
     public static BufferedImage overlay_launch_191x47;
     public static BufferedImage overlay_launch_label_191x47;
+    public static BufferedImage score_label_95x47;
+    public static BufferedImage score_display_47x47;
 
     //Rendering vars
     BufferStrategy bs;
@@ -42,10 +45,13 @@ public class Game extends Canvas implements Runnable {
     private static float menuPenguinTimer = 150;
 
     //Score & Level vars
+    public static int currentLevel = 1;
     public static int sequenceTarget = 1;
-    public static int[] sequence = new int[] { 1 };
+    public static int[] currentSequence = new int[] { 1 };
     public static int currentPar = 1;
+    public static int strokes = 0;
     public static boolean levelComplete = false;
+    public static boolean transitioning = false;
 
     //Gameplay vars
     public static float chargePower = 0;
@@ -77,6 +83,8 @@ public class Game extends Canvas implements Runnable {
         button_menu_pressed_95x47 = loader.loadImage("/button_menu_pressed_95x47.png");
         overlay_launch_191x47 = loader.loadImage("/overlay_launch_191x47.png");
         overlay_launch_label_191x47 = loader.loadImage("/overlay_launch_label_191x47.png");
+        score_label_95x47 = loader.loadImage("/score_label_95x47.png");
+        score_display_47x47 = loader.loadImage("/score_display_47x47.png");
 
         //Create core objects
         menu = new Menu();
@@ -140,7 +148,17 @@ public class Game extends Canvas implements Runnable {
         }
 
         if(gameState == STATE.Game) {
-            if(charging) {
+            if(levelComplete && !transitioning) {
+                //Update highscore if needed
+                if(strokes > LevelCollection.getLevelBest(currentLevel)) {
+                    LevelCollection.setLevelBest(currentLevel, strokes);
+                }
+                //Set to transitioning state
+                transitioning = true;
+                levelComplete = false;
+                Handler.addButton(new ImageTextButton(Menu.mainButtonFont, Color.black, "CONTINUE", Game.button_menu_200x120, Game.button_menu_hover_200x120, (Game.sWidth / 2) - 100, (Game.sHeight / 2) + 70, 200, 120));
+            }
+            if(charging && !transitioning) {
                 chargePower += 0.05 * deltaTime;
                 chargePower = clamp(chargePower, 0, 10);
             }
@@ -180,10 +198,11 @@ public class Game extends Canvas implements Runnable {
         Handler.stageList.add(new StageChunk(1186, 470, 94, 471));
         Handler.stageList.add(new StageChunk(-100, 0, 100, 1280));
         Handler.findTotalLevelArea();
-
         Handler.setNewCueBallPenguin();
-
         Handler.goalZone = new GoalZone(Game.sWidth - 94, 243, 94, 227);
+
+        currentPar = LevelCollection.getLevelPar(level);
+        LevelCollection.setupLevel(currentLevel);
     }
 
     public static void resetBoard() {
@@ -193,8 +212,12 @@ public class Game extends Canvas implements Runnable {
 
         charging = false;
         chargePower = 0;
+        strokes = 0;
+        sequenceTarget = 1;
+        transitioning = false;
 
         Handler.setNewCueBallPenguin();
+        LevelCollection.setupLevel(currentLevel);
     }
 
     public static void clearGameElements() {
@@ -202,9 +225,22 @@ public class Game extends Canvas implements Runnable {
         Handler.removeCrosshair();
         Handler.clearButtons();
         Handler.clearStageBoundaries();
+        Handler.goalZone = null;
 
         charging = false;
         chargePower = 0;
+        strokes = 0;
+        sequenceTarget = 1;
+        transitioning = false;
+    }
+
+    public static void resetLevelVars() {
+        currentLevel = 1;
+        currentPar = 1;
+        strokes = 0;
+        currentSequence = new int[] { 1 };
+        sequenceTarget = 1;
+        levelComplete = false;
     }
 
     public static boolean isPointInBounds(int mx, int my, int x, int y, int width, int height) {

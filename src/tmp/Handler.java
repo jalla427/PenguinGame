@@ -34,16 +34,18 @@ public class Handler {
         }
 
         if(Game.gameState == Game.STATE.Game) {
-            for(int i = 0; i < penguinList.size(); i++) {
-                penguinList.get(i).tick();
-            }
-            if(cueBallPenguin != null) {
-                if (!arePenguinsMoving() && !cueBallPenguin.cueBall) {
-                    setNewCueBallPenguin();
+            if(!Game.transitioning) {
+                for (int i = 0; i < penguinList.size(); i++) {
+                    penguinList.get(i).tick();
                 }
-            }
-            if(!Game.levelComplete && goalZone != null) {
-                goalZone.tick();
+                if (cueBallPenguin != null) {
+                    if (!arePenguinsMoving() && !cueBallPenguin.cueBall) {
+                        setNewCueBallPenguin();
+                    }
+                }
+                if (!Game.levelComplete && goalZone != null) {
+                    goalZone.tick();
+                }
             }
         }
     }
@@ -88,6 +90,15 @@ public class Handler {
         }
 
         for(int i = 0; i < buttonList.size(); i++) {
+            if(Game.gameState == Game.STATE.Game) {
+                if(buttonList.get(i).getName() == "SCORE_DISPLAY") { buttonList.get(i).setText(Integer.toString(Game.strokes)); }
+                if(buttonList.get(i).getName() == "PAR_DISPLAY") { buttonList.get(i).setText(Integer.toString(LevelCollection.getLevelPar(Game.currentLevel))); }
+                if(buttonList.get(i).getName() == "BEST_DISPLAY") {
+                    if(LevelCollection.getLevelBest(Game.currentLevel) > 0) { buttonList.get(i).setText(Integer.toString(LevelCollection.getLevelBest(Game.currentLevel))); }
+                    else { buttonList.get(i).setText("?"); }
+                }
+            }
+
             buttonList.get(i).render(g);
         }
     }

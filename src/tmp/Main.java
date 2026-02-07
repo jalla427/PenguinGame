@@ -7,7 +7,7 @@ public class Main extends Canvas {
 
     public Main(String title, Game gamePlay) {
         //Import icon image
-        ImageIcon iconImg = new ImageIcon("./res/icon.png");
+        ImageIcon iconImg = new ImageIcon("./res/icon_32x32.png");
 
         //Instantiate Outer Container
         JFrame jfrGameCore = new JFrame(title);

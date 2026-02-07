@@ -7,7 +7,7 @@ import tmp.ID;
 import java.awt.*;
 import java.awt.geom.Area;
 
-import static tmp.Game.sequence;
+import static tmp.Game.currentSequence;
 import static tmp.Game.sequenceTarget;
 
 public class GoalZone extends GameObject {
@@ -30,18 +30,18 @@ public class GoalZone extends GameObject {
             a2 = new Area(penguin.getBounds());
             a1.intersect(a2);
 
-            if(!a1.isEmpty() && penguin.color == Game.sequence[sequenceTarget - 1]) {
+            if(!a1.isEmpty() && penguin.color == Game.currentSequence[sequenceTarget - 1]) {
                 sequenceTarget++;
-                if(sequenceTarget > sequence.length) {
+                if(sequenceTarget > currentSequence.length) {
                     Game.levelComplete = true;
+                    sequenceTarget = 1;
                 }
             }
         }
     }
 
     public void render(Graphics g) {
-        g.setColor(Color.GREEN);
-        g.drawPolygon(collision);
+
     }
 
     public Polygon getBounds() {
@@ -49,7 +49,7 @@ public class GoalZone extends GameObject {
     }
 
     private void updateCollision() {
-        xCollision = new int[] {(int) this.x, (int) this.x + this.width, (int) this.x + this.width, (int) x};
+        xCollision = new int[] {(int) this.x + 14, (int) this.x + this.width, (int) this.x + this.width, (int) this.x + 14};
         yCollision = new int[] {(int) this.y, (int) this.y, (int) this.y + this.height, (int) this.y + this.height};
 
         collision = new Polygon();
