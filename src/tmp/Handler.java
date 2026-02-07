@@ -232,4 +232,39 @@ public class Handler {
             crosshairList.remove(0);
         }
     }
+
+    public static void resolvePenguinCollision(Penguin a, Penguin b) {
+        //Vector from Penguin a to Penguin b
+        double dx = b.getX() - a.getX();
+        double dy = b.getY() - a.getY();
+
+        double distance = Math.sqrt(dx * dx + dy * dy);
+        if (distance == 0) return;
+
+        //Normalized collision normal
+        double nx = dx / distance;
+        double ny = dy / distance;
+
+        //Tangent vector
+        double tx = -ny;
+        double ty = nx;
+
+        //Velocity along normal and tangent
+        double dpTanA = a.getVelX() * tx + a.getVelY() * ty;
+        double dpTanB = b.getVelX() * tx + b.getVelY() * ty;
+
+        double dpNormA = a.getVelX() * nx + a.getVelY() * ny;
+        double dpNormB = b.getVelX() * nx + b.getVelY() * ny;
+
+        //Swap velocities
+        double newNormA = dpNormB;
+        double newNormB = dpNormA;
+
+        //Re-combine velocities
+        a.setVelX((float) (tx * dpTanA + nx * newNormA));
+        a.setVelY((float) (ty * dpTanA + ny * newNormA));
+
+        b.setVelX((float) (tx * dpTanB + nx * newNormB));
+        b.setVelY((float) (ty * dpTanB + ny * newNormB));
+    }
 }

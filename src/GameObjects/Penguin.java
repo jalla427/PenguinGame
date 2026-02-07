@@ -205,12 +205,8 @@ public class Penguin extends GameObject {
                     this.x -= Math.signum(this.velX);
                     updateCollision();
 
-                    //Split the velocity between the two affected penguins
-                    penguin.velX = 3 * (this.velX / 4);
-                    this.velX = -this.velX / 4;
-                    if(penguin.velY == 0) {
-                        penguin.velY = -this.velY / 2;
-                    }
+                    //Determine new velocities of the two affected penguins
+                    Handler.resolvePenguinCollision(this, penguin);
 
                     collidedStageX = true;
                 } else {
@@ -249,13 +245,8 @@ public class Penguin extends GameObject {
                     this.y -= Math.signum(this.velY);
                     updateCollision();
 
-                    //Split the velocity between the two affected penguins
-                    penguin.velY = 3 * (this.velY / 4);
-                    this.velY = -this.velY / 4;
-
-                    if(penguin.velX == 0) {
-                        penguin.velX = -this.velX / 2;
-                    }
+                    //Determine new velocities of the two affected penguins
+                    Handler.resolvePenguinCollision(this, penguin);
 
                     collidedStageY = true;
                 } else {
