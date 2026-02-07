@@ -7,7 +7,7 @@ public class LevelCollection {
     public static Level[] levels = new Level[] {
             new Level(new int[] { 3 }, new int[][] { new int[] { 650 }, new int[] { 300 } }, 1),
             new Level(new int[] { 2, 1 }, new int[][] { new int[] { 600, 400 }, new int[] { 230, 500 } }, 2),
-            new Level(new int[] { 3, 2, 1 }, new int[][] { new int[] { 400, 500, 600 }, new int[] { 500, 400, 450 } }, 5),
+            new Level(new int[] { 3, 2, 1 }, new int[][] { new int[] { 400, 500, 600 }, new int[] { 500, 400, 450 } }, 4),
             new Level(new int[] { 1, 2, 2, 3 }, new int[][] { new int[] { 300, 300, 500, 500 }, new int[] { 200, 500, 200, 500 } }, 6),
             new Level(new int[] { 2, 1, 3, 1 }, new int[][] { new int[] { 400, 300, 400, 500 }, new int[] { 400, 340, 280, 400 } }, 6),
             new Level(new int[] { 1, 2, 3, 3, 1 }, new int[][] { new int[] { 500, 350, 500, 600, 200 }, new int[] { 400, 200, 250, 400, 200 } }, 8)

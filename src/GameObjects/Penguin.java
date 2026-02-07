@@ -15,6 +15,7 @@ public class Penguin extends GameObject {
     public float animationTimer = 0;
     public boolean cueBall = false;
     double friction = 0.001;
+    float audioCoolDown = 0;
 
     private Polygon collision;
     private int[] xCollision;
@@ -49,6 +50,8 @@ public class Penguin extends GameObject {
             updateCollision();
             collision.invalidate();
             applyFriction();
+
+            if(audioCoolDown > 0) { audioCoolDown -= (1 * Game.deltaTime); }
         }
     }
 
@@ -261,7 +264,10 @@ public class Penguin extends GameObject {
         if(!collidedStageY) { this.y += this.velY * Game.deltaTime; }
 
         //If any collisions, play penguin noise
-        if((collidedStageX || collidedStageY) && this.velX != 0 && this.velY != 0) { AudioPlayer.playRandomNeutralPenguinSound(); }
+        if((collidedStageX || collidedStageY) && this.velX != 0 && this.velY != 0 && audioCoolDown <= 0) {
+            AudioPlayer.playRandomNeutralPenguinSound();
+            audioCoolDown = 60;
+        }
 
         //If penguin is too far out of bounds, kill velocity
         if(this.x > Game.sWidth + 150) {
