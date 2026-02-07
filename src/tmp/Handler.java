@@ -89,6 +89,19 @@ public class Handler {
             }
         }
 
+        if(Game.gameState == Game.STATE.Menu) {
+            g.drawImage(Game.main_banner_600x250, 340, 40, null);
+        }
+
+        if(Game.gameState == Game.STATE.About) {
+            g.drawImage(Game.about_page, 40, 40, null);
+        }
+
+        if(Game.gameState == Game.STATE.Game && Game.transitioning) {
+            if(Game.passed) { g.drawImage(Game.clear_label_600x250, 340, 150, null); }
+            else { g.drawImage(Game.fail_label_600x250, 340, 150, null); }
+        }
+
         for(int i = 0; i < buttonList.size(); i++) {
             if(Game.gameState == Game.STATE.Game) {
                 if(buttonList.get(i).getName() == "SCORE_DISPLAY") { buttonList.get(i).setText(Integer.toString(Game.strokes)); }

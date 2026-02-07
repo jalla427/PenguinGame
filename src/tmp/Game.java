@@ -21,6 +21,10 @@ public class Game extends Canvas implements Runnable {
 
     //Sprites
     public static BufferedImage icebackground_1280x720;
+    public static BufferedImage main_banner_600x250;
+    public static BufferedImage about_page;
+    public static BufferedImage clear_label_600x250;
+    public static BufferedImage fail_label_600x250;
     public static BufferedImage stage_boundary_1280x720;
     public static BufferedImage stage_bottom_1280x106;
     public static SpriteSheet penguin_sheet_79x79_105;
@@ -72,6 +76,10 @@ public class Game extends Canvas implements Runnable {
         BufferedImageLoader loader = new BufferedImageLoader();
 
         icebackground_1280x720 = loader.loadImage("/IceBackground_1280x720.png");
+        main_banner_600x250 = loader.loadImage("/main_banner_600x250.png");
+        about_page = loader.loadImage("/about_page.png");
+        clear_label_600x250 = loader.loadImage("/clear_label_600x250.png");
+        fail_label_600x250 = loader.loadImage("/fail_label_600x250.png");
         stage_boundary_1280x720 = loader.loadImage("/stage_boundary_1280x720.png");
         stage_bottom_1280x106 = loader.loadImage("/stage_bottom_1280x106.png");
         penguin_sheet_79x79_105 = new SpriteSheet(loader.loadImage("/penguin_sheet_79x79.png"), 4, 105, 79, 79);
