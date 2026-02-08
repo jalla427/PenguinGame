@@ -25,8 +25,8 @@ public class Main extends Canvas {
         //Sets attributes for main container
         frameMain.setLocation(200, 50);
         frameMain.setResizable(false);
-        frameMain.setVisible(true);
         frameMain.setIconImage(iconImg.getImage());
+        frameMain.setVisible(true);
         frameMain.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
