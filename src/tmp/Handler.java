@@ -18,6 +18,7 @@ public class Handler {
     public static Area currentLevelArea = null;
     public static Penguin cueBallPenguin = null;
     public static boolean resetTrigger = false;
+    public static boolean menuTrigger = false;
 
     private static int greenValue = 255;
 
@@ -39,6 +40,12 @@ public class Handler {
                 if(resetTrigger) {
                     Game.resetBoard();
                     resetTrigger = false;
+                }
+                if(menuTrigger) {
+                    Game.clearGameElements();
+                    Game.resetLevelVars();
+                    Game.gameState = Game.STATE.Menu;
+                    menuTrigger = false;
                 }
                 for (int i = 0; i < penguinList.size(); i++) {
                     penguinList.get(i).tick();

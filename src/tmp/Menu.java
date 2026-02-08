@@ -36,7 +36,7 @@ public class Menu extends MouseAdapter {
         }
 
         if(Game.gameState == Game.STATE.About && buttonClicked != null) {
-            //Controls menu
+            //About menu
             if(buttonClicked.getName() == "BACK") {
                 buttonClicked.isClicked = true;
             }
@@ -97,7 +97,7 @@ public class Menu extends MouseAdapter {
         }
 
         if(Game.gameState == Game.STATE.About && buttonClicked != null) {
-            //Controls menu
+            //About menu
             if(buttonClicked.getName() == "BACK") {
                 AudioPlayer.playSound("/buttonClick.wav");
                 Handler.clearButtons();
@@ -114,9 +114,7 @@ public class Menu extends MouseAdapter {
                 }
                 if(buttonClicked.getName() == "MENU") {
                     AudioPlayer.playSound("/buttonClick.wav");
-                    Game.clearGameElements();
-                    Game.resetLevelVars();
-                    Game.gameState = Game.STATE.Menu;
+                    Handler.menuTrigger = true;
                 }
                 if(buttonClicked.getName() == "CONTINUE" && Game.transitioning) {
                     AudioPlayer.playSound("/buttonClick.wav");
